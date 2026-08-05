@@ -1,0 +1,183 @@
+@import "tailwindcss";
+@config "../tailwind.config.js";
+
+@theme {
+  --color-background: var(--color-background);
+  --color-background-elevated: var(--color-background-elevated);
+  --color-surface: var(--color-surface);
+  --color-surface-hover: var(--color-surface-hover);
+  --color-surface-alt: var(--color-surface-alt);
+  --color-border: var(--color-border);
+  --color-text: var(--color-text);
+  --color-text-muted: var(--color-text-muted);
+
+  --color-primary: var(--color-primary);
+  --color-primary-light: var(--color-primary-light);
+  --color-accent: var(--color-accent);
+  --color-warning: var(--color-warning);
+  --color-success: var(--color-success);
+
+  --font-display: "Space Grotesk", sans-serif;
+  --font-body: "Inter", sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+
+  --animate-float: floatY 10s ease-in-out infinite;
+  --animate-grid-drift: gridDrift 40s linear infinite;
+  --animate-pulse-glow: pulseGlow 8s ease-in-out infinite;
+}
+
+:root {
+  --color-background: #ffffff;
+  --color-background-elevated: #f1f5f9;
+  --color-surface: #f8fafc;
+  --color-surface-hover: #e2e8f0;
+  --color-surface-alt: #f1f5f9;
+  --color-border: #e2e8f0;
+  --color-text: #0f172a;
+  --color-text-muted: #64748b;
+
+  /* Shared Colors */
+  --color-primary: #3b82f6;
+  --color-primary-light: #60a5fa;
+  --color-accent: #22d3ee;
+  --color-warning: #fbbf24;
+  --color-success: #34d399;
+
+  /* fonts */
+  --font-display: "Space Grotesk", sans-serif;
+  --font-body: "Inter", sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+
+  /* Radius */
+  --radius: 14px;
+}
+
+.dark {
+  --color-background: #070b14;
+  --color-background-elevated: #0d1420;
+
+  --color-surface: #111a2b;
+  --color-surface-hover: #1e293b;
+  --color-surface-alt: #0c1220;
+
+  --color-border: #1e293b;
+
+  --color-text: #e7ecf3;
+  --color-text-muted: #8b96a8;
+}
+
+@keyframes floatY {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-24px) rotate(6deg);
+  }
+}
+
+@keyframes gridDrift {
+  from {
+    transform: translate(0, 0);
+  }
+  to {
+    transform: translate(-52px, -52px);
+  }
+}
+
+@keyframes pulseGlow {
+  0%,
+  100% {
+    opacity: 0.6;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.08);
+  }
+}
+
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(40px);
+  transition:
+    opacity 0.7s ease,
+    transform 0.7s ease;
+  will-change: opacity, transform;
+}
+
+[data-reveal].visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal] {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-body);
+  background: var(--color-background);
+  color: var(--color-text);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+button {
+  cursor: pointer;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+@keyframes floatY {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@layer components {
+  .btn {
+    @apply inline-flex cursor-pointer items-center justify-center gap-2 rounded-xl px-6 py-3 text-sm font-medium transition-all duration-200;
+  }
+
+  .btn-primary {
+    @apply bg-primary text-white hover:opacity-90 active:scale-[0.98];
+  }
+
+  .btn-outline {
+    @apply border-border text-text hover:border-primary hover:text-primary border bg-transparent;
+  }
+
+  .btn-ghost {
+    @apply border-border bg-surface text-text hover:bg-surface-hover border;
+  }
+
+  .btn-sm {
+    @apply px-4 py-2 text-sm;
+  }
+
+  .btn-lg {
+    @apply px-8 py-4 text-base;
+  }
+}
