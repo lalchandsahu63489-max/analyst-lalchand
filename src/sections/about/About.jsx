@@ -20,14 +20,6 @@ const About = () => {
         {/* Education */}
 
         <Education />
-
-        {/* Proof Of Work*/}
-
-        <ProofOfWork />
-
-        {/* Personality */}
-
-        <Personality />
       </Container>
     </section>
   );

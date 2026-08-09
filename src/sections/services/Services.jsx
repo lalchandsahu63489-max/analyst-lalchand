@@ -20,20 +20,6 @@ const Services = () => {
             <ServiceCard key={service.title} {...service} />
           ))}
         </div>
-
-        <div className="border-border from-primary/12 to-accent/8 mb-10 rounded-2xl border bg-linear-to-br p-10 text-center">
-          <h3 className="font-display text-text mb-5 text-[22px]">
-            Need Help With Your Data?
-          </h3>
-          <div className="flex flex-wrap justify-center gap-3.5">
-            <a href="#contact" className="btn btn-primary">
-              Contact Me
-            </a>
-            <a href="#projects" className="btn btn-ghost">
-              View My Work
-            </a>
-          </div>
-        </div>
       </Container>
     </section>
   );

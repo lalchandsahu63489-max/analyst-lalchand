@@ -60,33 +60,4 @@ export const educationData = [
   },
 ];
 
-export const certificatesData = [
-  { title: "SQL for Data Analysis", platform: "Platform Name · 2023" },
-  { title: "Power BI Data Analyst", platform: "Platform Name · 2023" },
-  { title: "Excel Advanced Analytics", platform: "Platform Name · 2024" },
-];
-
-export const valuesData = [
-  {
-    icon: FiSearch,
-    title: "Problem Solving",
-    desc: "Finding solutions through data and logical thinking.",
-  },
-  {
-    icon: FiStar,
-    title: "Continuous Learning",
-    desc: "Always improving skills and exploring new technologies.",
-  },
-  {
-    icon: FiTrendingUp,
-    title: "Business Thinking",
-    desc: "Understanding data beyond just the numbers.",
-  },
-  {
-    icon: FiMessageSquare,
-    title: "Data Storytelling",
-    desc: "Communicating insights clearly and persuasively.",
-  },
-];
-
 export const CertIcon = FiAward;
