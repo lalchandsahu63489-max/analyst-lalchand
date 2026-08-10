@@ -9,7 +9,7 @@ const MobileNav = ({ isOpen, onClose }) => {
         isOpen ? "max-h-screen" : "max-h-0"
       }`}
     >
-      <div className="border-t border-(--color-border) bg-(--color-background-elevated)">
+      <div className="border-t border-border bg-background-elevated">
         <Container className="py-6">
           <nav aria-label="Mobile Navigation">
             <ul className="flex flex-col">
@@ -18,7 +18,7 @@ const MobileNav = ({ isOpen, onClose }) => {
                   <a
                     href={item.href}
                     onClick={onClose}
-                    className="block border-b border-(--color-border) py-4 text-(--color-text-muted) transition-colors duration-300 hover:text-(--color-text)"
+                    className="block border-b border-border py-4 text-text-muted transition-colors duration-300 hover:text-text"
                   >
                     {item.label}
                   </a>

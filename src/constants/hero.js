@@ -99,7 +99,7 @@ export const HERO_CONTENT = {
     {
       icon: HiArrowDownTray,
       label: "Download Resume",
-      href: "#resume-link",
+      href: "/Resume.docx",
       type: "ghost",
       download: true,
     },

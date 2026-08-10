@@ -39,8 +39,12 @@ const Footer = () => {
           {/* Actions */}
 
           <div className="mb-14 flex flex-wrap justify-center gap-4">
-            <Button variant="ghost">Download Resume</Button>
-            <Button variant="outline">View Projects</Button>
+            <a href="/Resume.docx" download="Resume.docx">
+              <Button variant="ghost">Download Resume</Button>
+            </a>
+            <a href="#projects">
+              <Button variant="outline">View Projects</Button>
+            </a>
           </div>
 
           {/* Divider */}

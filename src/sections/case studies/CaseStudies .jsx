@@ -8,16 +8,6 @@ import SectionHeader from "../../components/common/SectionHeader";
 const CaseStudies = ({
   onReadCaseStudy = (id) => console.log("open modal:", id),
 }) => {
-  const [activeFilter, setActiveFilter] = useState("all");
-
-  const filteredCaseStudies = useMemo(
-    () =>
-      activeFilter === "all"
-        ? caseStudiesData
-        : caseStudiesData.filter((c) => c.category === activeFilter),
-    [activeFilter],
-  );
-
   return (
     <section id="case-studies" data-reveal>
       <Container>
@@ -28,31 +18,8 @@ const CaseStudies = ({
           className="mb-14"
         />
 
-        <div
-          className="mb-10 flex flex-wrap justify-center gap-2.5"
-          role="tablist"
-          aria-label="Filter case studies by industry"
-        >
-          {caseStudyFilters.map(({ label, value }) => (
-            <button
-              key={value}
-              type="button"
-              role="tab"
-              aria-selected={activeFilter === value}
-              onClick={() => setActiveFilter(value)}
-              className={`rounded-full border px-4.5 py-2 font-mono text-[12.5px] transition-all duration-150 ${
-                activeFilter === value
-                  ? "border-accent bg-primary/14 text-accent"
-                  : "border-border bg-surface text-text-muted hover:text-text"
-              }`}
-            >
-              {label}
-            </button>
-          ))}
-        </div>
-
         <div className="mb-5 grid grid-cols-1 gap-5.5 md:grid-cols-2 lg:grid-cols-3">
-          {filteredCaseStudies.map((caseStudy) => (
+          {caseStudiesData.map((caseStudy) => (
             <CaseStudyCard
               key={caseStudy.id}
               caseStudy={caseStudy}

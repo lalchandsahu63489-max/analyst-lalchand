@@ -1,9 +1,7 @@
 import Container from "../../components/ui/Container";
-import AboutMe from "./components/AboutMe";
-import Education from "./components/Education";
+import AboutMe from "./components/AboutMe";import Education from "./components/Education";
 import MyJourney from "./components/MyJourney";
-import Personality from "./components/Personality";
-import ProofOfWork from "./components/ProofOfWork";
+
 
 const About = () => {
   return (

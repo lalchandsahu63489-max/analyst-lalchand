@@ -58,14 +58,19 @@ const HeroTop = () => {
         {HERO_CONTENT.actions.map((action) => {
           const Icon = action.icon;
           return (
-            <Button
+            <a
+              href={action.href}
               key={action.label}
-              onClick={() => console.log("clicked")}
-              variant={action.type}
+              download={action.download && action.href}
             >
-              <span>{action.label}</span>
-              <Icon className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1" />
-            </Button>
+              <Button
+                onClick={() => console.log("clicked")}
+                variant={action.type}
+              >
+                <span>{action.label}</span>
+                <Icon className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1" />
+              </Button>
+            </a>
           );
         })}
       </div>
