@@ -1,4 +1,4 @@
-import { projectFilters, projectsData } from "../../constants/projects";
+import { projectsData } from "../../constants/projects";
 import Container from "../../components/ui/Container";
 import ProjectCard from "./components/ProjectCard";
 import { useMemo, useState } from "react";

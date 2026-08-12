@@ -1,12 +1,3 @@
-export const projectFilters = [
-  { label: "All", value: "all" },
-  { label: "SQL", value: "sql" },
-  { label: "Excel", value: "excel" },
-  { label: "Power BI", value: "powerbi" },
-  { label: "Statistics", value: "statistics" },
-  { label: "Data Cleaning", value: "cleaning" },
-];
-
 export const projectsData = [
   {
     id: "proj1",
