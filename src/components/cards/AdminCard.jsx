@@ -5,16 +5,17 @@ const AdminCard = ({
   description,
   tags = [],
   showTags = true,
-  img,
+  image,
   githubUrl,
   onEdit,
   onDelete,
 }) => {
+  console.log(tags);
   return (
     <div className="bg-surface border-border flex flex-col overflow-hidden rounded-2xl border">
       <div className="bg-background-elevated border-border flex h-35 items-center justify-center overflow-hidden border-b">
-        {img ? (
-          <img src={img} alt={title} className="h-full w-full object-cover" />
+        {image ? (
+          <img src={image} alt={title} className="h-full w-full object-cover" />
         ) : (
           <FiImage size={26} className="text-text-muted" />
         )}

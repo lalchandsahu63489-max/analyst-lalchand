@@ -1,9 +1,7 @@
-export const uploadImage = async (e) => {
-  const file = e.target.files[0];
-
+export const uploadImage = async (file) => {
   const data = new FormData();
 
-  data.append("photos", file);
+  data.append("file", file);
   data.append("upload_preset", "portfolio");
   data.append("cloud_name", "vbju64fk");
 
@@ -15,7 +13,7 @@ export const uploadImage = async (e) => {
     },
   );
 
-  const responsedData = res.json();
+  const responsedData = await res.json();
 
   return responsedData.url;
 };

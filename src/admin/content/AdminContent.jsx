@@ -3,10 +3,28 @@ import AdminTop from "../components/AdminTop";
 import AdminCard from "../../components/cards/AdminCard";
 import AdminAddModal from "../components/AdminAddModal";
 import { contentData } from "../../constants/content";
+import { addContent } from "../../services/addMethods";
+import LoadingOverlay from "../../components/common/LoadingOverlay";
 
 const AdminContent = () => {
   const [search, setSearch] = useState("");
   const [isAddOpen, setIsAddOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleAddContent = async (value) => {
+    try {
+      setIsLoading(true);
+      await addContent(value);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  if (isLoading) {
+    return <LoadingOverlay label="Adding Content..." />;
+  }
 
   return (
     <>
@@ -35,7 +53,7 @@ const AdminContent = () => {
       <AdminAddModal
         isOpen={isAddOpen}
         onClose={() => setIsAddOpen(false)}
-        onSubmit={(values) => console.log("new item:", values)}
+        onSubmit={handleAddContent}
       />
     </>
   );

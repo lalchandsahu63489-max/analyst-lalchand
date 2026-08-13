@@ -3,10 +3,28 @@ import AdminCard from "../../components/cards/AdminCard";
 import AdminAddModal from "../components/AdminAddModal";
 import AdminTop from "../components/AdminTop";
 import { caseStudiesData } from "../../constants/caseStudies";
+import { addCaseStudies } from "../../services/addMethods";
+import LoadingOverlay from "../../components/common/LoadingOverlay";
 
 const AdminCaseStudies = () => {
   const [search, setSearch] = useState("");
   const [isAddOpen, setIsAddOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleAddCaseStudies = async (value) => {
+    try {
+      setIsLoading(true);
+      await addCaseStudies(value);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  if (isLoading) {
+    return <LoadingOverlay label="Adding Case Study..." />;
+  }
 
   return (
     <>
@@ -35,7 +53,7 @@ const AdminCaseStudies = () => {
       <AdminAddModal
         isOpen={isAddOpen}
         onClose={() => setIsAddOpen(false)}
-        onSubmit={(values) => console.log("new item:", values)}
+        onSubmit={handleAddCaseStudies}
       />
     </>
   );
