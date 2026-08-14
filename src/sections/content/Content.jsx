@@ -7,8 +7,15 @@ import {
 } from "../../constants/content";
 import ContentCard from "./components/ContentCard";
 import SectionHeader from "../../components/common/SectionHeader";
+import { getContent } from "../../services/getMethods";
+import { useQuery } from "@tanstack/react-query";
 
 const Content = () => {
+  const { data, error, isLoading } = useQuery({
+    queryKey: ["content"],
+    queryFn: getContent,
+  });
+
   return (
     <section id="content" data-reveal>
       <Container>
@@ -20,8 +27,14 @@ const Content = () => {
         />
 
         <div className="mb-10 grid grid-cols-1 gap-5.5 md:grid-cols-2 lg:grid-cols-3">
-          {contentData.map((item) => (
-            <ContentCard key={item.id} {...item} />
+          {data?.map((item) => (
+            <ContentCard
+              key={item.id}
+              title={item.title}
+              description={item.shortDescription}
+              image={item.imgUrl}
+              githubUrl={item.githubUrl}
+            />
           ))}
         </div>
 

@@ -10,7 +10,6 @@ const AdminCard = ({
   onEdit,
   onDelete,
 }) => {
-  console.log(tags);
   return (
     <div className="bg-surface border-border flex flex-col overflow-hidden rounded-2xl border">
       <div className="bg-background-elevated border-border flex h-35 items-center justify-center overflow-hidden border-b">

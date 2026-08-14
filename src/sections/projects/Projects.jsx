@@ -3,10 +3,17 @@ import Container from "../../components/ui/Container";
 import ProjectCard from "./components/ProjectCard";
 import { useMemo, useState } from "react";
 import SectionHeader from "../../components/common/SectionHeader";
+import { useQuery } from "@tanstack/react-query";
+import { getProjects } from "../../services/getMethods";
 
 const Projects = ({
   onViewDetails = (id) => console.log("Open modal:", id),
 }) => {
+  const { data, error, isLoading } = useQuery({
+    queryKey: ["projects"],
+    queryFn: getProjects,
+  });
+
   return (
     <section id="projects" data-reveal>
       <Container>
@@ -18,11 +25,15 @@ const Projects = ({
         />
 
         <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
-          {projectsData.map((project) => (
+          {data?.map((project) => (
             <ProjectCard
               key={project.id}
-              project={project}
-              onViewDetails={onViewDetails}
+              title={project.title}
+              description={project.shortDescription}
+              image={project.imgUrl}
+              tags={project.tags}
+              githubUrl={project.githubUrl}
+              onViewDetails={() => onViewDetails(project.id)}
             />
           ))}
         </div>

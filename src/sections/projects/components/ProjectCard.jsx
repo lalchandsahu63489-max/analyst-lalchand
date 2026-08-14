@@ -1,59 +1,66 @@
 import Button from "../../../components/ui/Button";
+import { FiImage } from "react-icons/fi";
 
-const ProjectCard = ({ project, onViewDetails }) => {
+const ProjectCard = ({
+  title,
+  description,
+  tags = [],
+  image,
+  githubUrl,
+  featured = false,
+  onViewDetails,
+}) => {
   return (
     <div className="group border-border bg-surface hover:border-primary-light flex flex-col overflow-hidden rounded-2xl border transition-all duration-200 hover:-translate-y-1.5">
-      <div className="border-border bg-background-elevated relative flex h-32 items-end gap-1.5 overflow-hidden border-b p-4">
-        {project.featured && (
-          <span className="bg-warning/15 text-warning absolute top-2.5 right-2.5 rounded-full px-2.5 py-0.5 font-mono text-[10px]">
-            Featured
-          </span>
+      {/* Image */}
+      <div className="border-border bg-background-elevated relative flex h-32 items-center justify-center overflow-hidden border-b">
+        {image ? (
+          <img src={image} alt={title} className="h-full w-full object-cover" />
+        ) : (
+          <FiImage size={26} className="text-text-muted" />
         )}
-
-        {project.bars.map((height, index) => (
-          <div
-            key={index}
-            style={{ height: `${height}%` }}
-            className="from-primary to-accent flex-1 rounded-t-sm bg-linear-to-b opacity-55 transition-opacity duration-200 group-hover:opacity-85"
-          />
-        ))}
       </div>
 
+      {/* Content */}
       <div className="flex flex-1 flex-col p-5">
-        <h3 className="font-display text-text mb-2 text-lg">{project.title}</h3>
+        <h3 className="font-display text-text mb-2 text-lg">{title}</h3>
 
-        <p className="text-text-muted mb-3.5 flex-1 text-sm">{project.desc}</p>
+        {description && (
+          <p className="text-text-muted mb-3.5 flex-1 text-sm">{description}</p>
+        )}
 
-        <div className="mb-4 flex flex-wrap gap-1.5">
-          {project.tags.map((tag) => (
-            <span
-              key={tag}
-              className="bg-primary/15 text-accent rounded-md px-2.5 py-0.5 font-mono text-[10px]"
-            >
-              {tag}
-            </span>
-          ))}
-        </div>
+        {/* Tags */}
+        {tags.length > 0 && (
+          <div className="mb-4 flex flex-wrap gap-1.5">
+            {tags.map((tag) => (
+              <span
+                key={tag}
+                className="bg-primary/15 text-accent rounded-md px-2.5 py-0.5 font-mono text-[10px]"
+              >
+                {tag}
+              </span>
+            ))}
+          </div>
+        )}
 
+        {/* Actions */}
         <div className="flex gap-2.5">
-          <Button
-            variant="primary"
-            size="sm"
-            onClick={() => onViewDetails(project.id)}
-          >
+          <Button variant="primary" size="sm" onClick={onViewDetails}>
             View Details
           </Button>
 
-          <Button
-            as="a"
-            href={project.githubUrl}
-            target="_blank"
-            rel="noreferrer"
-            variant="outline"
-            size="sm"
-          >
-            GitHub
-          </Button>
+          {githubUrl && (
+            <Button
+              as="a"
+              href={githubUrl}
+              target="_blank"
+              rel="noreferrer"
+              variant="outline"
+              size="sm"
+            >
+              GitHub
+            </Button>
+          )}
         </div>
       </div>
     </div>

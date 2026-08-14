@@ -5,31 +5,45 @@ import AdminAddModal from "../components/AdminAddModal";
 import { contentData } from "../../constants/content";
 import { addContent } from "../../services/addMethods";
 import LoadingOverlay from "../../components/common/LoadingOverlay";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { getContent } from "../../services/getMethods";
 
 const AdminContent = () => {
   const [search, setSearch] = useState("");
   const [isAddOpen, setIsAddOpen] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
 
-  const handleAddContent = async (value) => {
-    try {
-      setIsLoading(true);
-      await addContent(value);
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  const queryClient = useQueryClient();
 
-  if (isLoading) {
+  const { data, error, isLoading } = useQuery({
+    queryKey: ["content"],
+    queryFn: getContent,
+  });
+
+  const { mutate, isPending } = useMutation({
+    mutationKey: ["content"],
+    mutationFn: addContent,
+    onSuccess: () => {
+      console.log("success");
+      queryClient.invalidateQueries({
+        queryKey: ["content"],
+      });
+    },
+    onError: () => {
+      console.log("error");
+    },
+  });
+
+  if (isPending) {
     return <LoadingOverlay label="Adding Content..." />;
+  }
+  if (isLoading) {
+    return <LoadingOverlay label="Loading Content..." />;
   }
 
   return (
     <>
       <AdminTop
-        title="Case Studies"
+        title="Gallery / Content"
         subtitle="Manage your portfolio's case studies"
         searchValue={search}
         onSearchChange={(e) => setSearch(e.target.value)}
@@ -37,11 +51,12 @@ const AdminContent = () => {
         addLabel="Add Case Study"
       />
       <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-        {contentData.map((item) => (
+        {data.map((item) => (
           <AdminCard
             key={item.id}
             title={item.title}
-            description={item.desc}
+            description={item.shortDescription}
+            image={item.imgUrl}
             showTags={false}
             githubUrl={item.githubUrl}
             onEdit={() => console.log("edit", item.id)}
@@ -53,7 +68,7 @@ const AdminContent = () => {
       <AdminAddModal
         isOpen={isAddOpen}
         onClose={() => setIsAddOpen(false)}
-        onSubmit={handleAddContent}
+        onSubmit={mutate}
       />
     </>
   );

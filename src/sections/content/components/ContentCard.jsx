@@ -1,29 +1,43 @@
 const ContentCard = ({
-  icon: Icon,
-  categoryLabel,
   title,
-  desc,
-  meta,
-  actionLabel,
-  href,
+  description,
+  image,
+  tags = [],
+  featured = false,
+  githubUrl,
 }) => {
   return (
-    <div className="bg-surface border-border overflow-hidden rounded-2xl border transition-transform duration-200 hover:-translate-y-1">
-      <div className="bg-background-elevated border-border text-primary-light relative flex h-30 items-center justify-center border-b">
-        <span className="text-accent bg-primary/14 absolute top-2.5 left-2.5 rounded-full px-2.5 py-0.5 font-mono text-[10px]">
-          {categoryLabel}
-        </span>
-        <Icon size={26} />
+    <div className="group border-border bg-surface hover:border-primary-light flex flex-col overflow-hidden rounded-2xl border transition-all duration-200 hover:-translate-y-1.5">
+      {/* Image */}
+      <div className="border-border bg-background-elevated relative flex h-32 items-center justify-center overflow-hidden border-b">
+        {image ? (
+          <img src={image} alt={title} className="h-full w-full object-cover" />
+        ) : (
+          <div className="text-text-muted">No Image</div>
+        )}
       </div>
-      <div className="p-4.5">
-        <h4 className="font-display text-text mb-1.5 text-[15px]">{title}</h4>
-        <p className="text-text-muted mb-3 text-[12.5px]">{desc}</p>
-        <div className="text-text-muted flex items-center justify-between font-mono text-[11px]">
-          <span>{meta}</span>
-          <a href={href} className="btn btn-outline btn-sm">
-            {actionLabel}
-          </a>
-        </div>
+
+      {/* Content */}
+      <div className="flex flex-1 flex-col p-5">
+        <h3 className="font-display text-text mb-2 text-lg">{title}</h3>
+
+        {description && (
+          <p className="text-text-muted mb-3.5 flex-1 text-sm">{description}</p>
+        )}
+
+        {/* GitHub */}
+        {githubUrl && (
+          <div>
+            <a
+              href={githubUrl}
+              target="_blank"
+              rel="noreferrer"
+              className="btn btn-outline btn-sm"
+            >
+              GitHub
+            </a>
+          </div>
+        )}
       </div>
     </div>
   );

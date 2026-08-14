@@ -5,25 +5,40 @@ import AdminTop from "../components/AdminTop";
 import { caseStudiesData } from "../../constants/caseStudies";
 import { addCaseStudies } from "../../services/addMethods";
 import LoadingOverlay from "../../components/common/LoadingOverlay";
+import { getCaseStudies } from "../../services/getMethods";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 const AdminCaseStudies = () => {
   const [search, setSearch] = useState("");
   const [isAddOpen, setIsAddOpen] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
 
-  const handleAddCaseStudies = async (value) => {
-    try {
-      setIsLoading(true);
-      await addCaseStudies(value);
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  // yaha se
+  const queryClient = useQueryClient();
 
-  if (isLoading) {
+  const { data, error, isLoading } = useQuery({
+    queryKey: ["case-study"],
+    queryFn: getCaseStudies,
+  });
+
+  const { mutate, isPending } = useMutation({
+    mutationKey: ["case-study"],
+    mutationFn: addCaseStudies,
+    onSuccess: () => {
+      console.log("success");
+      queryClient.invalidateQueries({
+        queryKey: ["case-study"],
+      });
+    },
+    onError: () => {
+      console.log("error");
+    },
+  });
+
+  if (isPending) {
     return <LoadingOverlay label="Adding Case Study..." />;
+  }
+  if (isLoading) {
+    return <LoadingOverlay label="Loading Case Studies..." />;
   }
 
   return (
@@ -37,12 +52,13 @@ const AdminCaseStudies = () => {
         addLabel="Add Case Study"
       />
       <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-        {caseStudiesData.map((item) => (
+        {data?.map((item) => (
           <AdminCard
             key={item.id}
             title={item.title}
-            description={item.desc}
+            description={item.shortDescription}
             tags={item.tags}
+            image={item.imgUrl}
             githubUrl={item.githubUrl}
             onEdit={() => console.log("edit", item.id)}
             onDelete={() => console.log("delete", item.id)}
@@ -53,7 +69,7 @@ const AdminCaseStudies = () => {
       <AdminAddModal
         isOpen={isAddOpen}
         onClose={() => setIsAddOpen(false)}
-        onSubmit={handleAddCaseStudies}
+        onSubmit={mutate}
       />
     </>
   );

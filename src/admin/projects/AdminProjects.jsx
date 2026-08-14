@@ -6,36 +6,39 @@ import AdminAddModal from "../components/AdminAddModal";
 import { addProject } from "../../services/addMethods";
 import { getProjects } from "../../services/getMethods";
 import LoadingOverlay from "../../components/common/LoadingOverlay";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 const AdminProjects = () => {
   const [search, setSearch] = useState("");
   const [isAddOpen, setIsAddOpen] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [projects, setProject] = useState([]);
+  const queryClient = useQueryClient();
 
-  const handleAddProject = async (value) => {
-    try {
-      setIsLoading(true);
-      await addProject(value);
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  const { data, error, isLoading } = useQuery({
+    queryKey: ["projects"],
+    queryFn: getProjects,
+  });
 
-  useEffect(() => {
-    const getData = async () => {
-      const projects = await getProjects();
-      setProject(projects);
-    };
+  const { mutate, isPending } = useMutation({
+    mutationKey: ["projects"],
+    mutationFn: addProject,
+    onSuccess: () => {
+      console.log("success");
+      queryClient.invalidateQueries({
+        queryKey: ["projects"],
+      });
+    },
+    onError: () => {
+      console.log("error");
+    },
+  });
 
-    getData();
-  }, []);
-
-  if (isLoading) {
+  if (isPending) {
     return <LoadingOverlay label="Adding Project..." />;
   }
+  if (isLoading) {
+    return <LoadingOverlay label="Loading Project..." />;
+  }
+
 
   return (
     <>
@@ -48,7 +51,7 @@ const AdminProjects = () => {
         addLabel="Add Project"
       />
       <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-        {projects.map((project) => {
+        {data?.map((project) => {
           console.log(project);
           return (
             <AdminCard
@@ -68,7 +71,7 @@ const AdminProjects = () => {
       <AdminAddModal
         isOpen={isAddOpen}
         onClose={() => setIsAddOpen(false)}
-        onSubmit={handleAddProject}
+        onSubmit={mutate}
       />
 
       {/* {projects.map((project) => {
