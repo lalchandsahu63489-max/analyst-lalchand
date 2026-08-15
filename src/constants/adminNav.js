@@ -8,5 +8,4 @@ export const adminNavItems = [
     icon: FiBookOpen,
   },
   { label: "Gallery", path: "/admin_hu_yaar/content", icon: FiImage },
-  { label: "Trash", path: "/admin_hu_yaar/trash", icon: FiTrash2 },
 ];

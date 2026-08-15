@@ -3,7 +3,6 @@ import Portfolio from "./pages/Portfolio";
 import Admin from "./pages/Admin";
 import AdminContent from "./admin/content/AdminContent";
 import AdminProjects from "./admin/projects/AdminProjects";
-import AdminTrash from "./admin/trash/AdminTrash";
 import AdminCaseStudies from "./admin/case-study/AdminCaseStudies";
 import AdminHero from "./admin/hero/AdminHero";
 import { Toaster } from "react-hot-toast";
@@ -32,10 +31,6 @@ const router = createBrowserRouter([
       {
         path: "content",
         element: <AdminContent />,
-      },
-      {
-        path: "trash",
-        element: <AdminTrash />,
       },
     ],
   },
