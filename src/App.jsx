@@ -6,6 +6,7 @@ import AdminProjects from "./admin/projects/AdminProjects";
 import AdminTrash from "./admin/trash/AdminTrash";
 import AdminCaseStudies from "./admin/case-study/AdminCaseStudies";
 import AdminHero from "./admin/hero/AdminHero";
+import { Toaster } from "react-hot-toast";
 
 const router = createBrowserRouter([
   {
@@ -44,6 +45,16 @@ function App() {
   return (
     <>
       <RouterProvider router={router} />
+      <Toaster
+        position="bottom-center"
+        reverseOrder={false}
+        toastOptions={{
+          style: {
+            background: "#070b14",
+            color: "#fff",
+          },
+        }}
+      />
     </>
   );
 }

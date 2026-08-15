@@ -7,6 +7,8 @@ import { addContent } from "../../services/addMethods";
 import LoadingOverlay from "../../components/common/LoadingOverlay";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { getContent } from "../../services/getMethods";
+import { deleteContent } from "../../services/deleteMethods";
+import toast from "react-hot-toast";
 
 const AdminContent = () => {
   const [search, setSearch] = useState("");
@@ -23,13 +25,29 @@ const AdminContent = () => {
     mutationKey: ["content"],
     mutationFn: addContent,
     onSuccess: () => {
-      console.log("success");
+      toast.success("Added Content");
       queryClient.invalidateQueries({
         queryKey: ["content"],
       });
     },
     onError: () => {
       console.log("error");
+      toast.error("Error : something went wrong!");
+    },
+  });
+
+  const deleteMutation = useMutation({
+    mutationKey: ["content"],
+    mutationFn: deleteContent,
+    onSuccess: () => {
+      toast.success("Deleted Successfully");
+      queryClient.invalidateQueries({
+        queryKey: ["content"],
+      });
+    },
+    onError: (error) => {
+      console.log(error);
+      toast.error("Error : something went wrong!");
     },
   });
 
@@ -39,6 +57,9 @@ const AdminContent = () => {
   if (isLoading) {
     return <LoadingOverlay label="Loading Content..." />;
   }
+
+  if (deleteMutation.isPending)
+    return <LoadingOverlay label="Deleting Content..." />;
 
   return (
     <>
@@ -60,7 +81,7 @@ const AdminContent = () => {
             showTags={false}
             githubUrl={item.githubUrl}
             onEdit={() => console.log("edit", item.id)}
-            onDelete={() => console.log("delete", item.id)}
+            onDelete={() => deleteMutation.mutate(item.id)}
           />
         ))}
       </div>

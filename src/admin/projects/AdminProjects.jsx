@@ -7,6 +7,8 @@ import { addProject } from "../../services/addMethods";
 import { getProjects } from "../../services/getMethods";
 import LoadingOverlay from "../../components/common/LoadingOverlay";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { deleteProject } from "../../services/deleteMethods";
+import toast from "react-hot-toast";
 
 const AdminProjects = () => {
   const [search, setSearch] = useState("");
@@ -18,17 +20,32 @@ const AdminProjects = () => {
     queryFn: getProjects,
   });
 
-  const { mutate, isPending } = useMutation({
+  const { mutate, isPending, error } = useMutation({
     mutationKey: ["projects"],
     mutationFn: addProject,
     onSuccess: () => {
-      console.log("success");
+      toast.success("Added Project");
       queryClient.invalidateQueries({
         queryKey: ["projects"],
       });
     },
     onError: () => {
       console.log("error");
+      toast.error("Error : something went wrong!");
+    },
+  });
+
+  const deleteMutation = useMutation({
+    mutationKey: ["projects"],
+    mutationFn: deleteProject,
+    onSuccess: () => {
+      toast.success("Deleted Successfully");
+      queryClient.invalidateQueries({
+        queryKey: ["projects"],
+      });
+    },
+    onError: (error) => {
+      toast.error("Error : something went wrong!");
     },
   });
 
@@ -39,6 +56,8 @@ const AdminProjects = () => {
     return <LoadingOverlay label="Loading Project..." />;
   }
 
+  if (deleteMutation.isPending)
+    return <LoadingOverlay label="deleting Project..." />;
 
   return (
     <>
@@ -61,7 +80,7 @@ const AdminProjects = () => {
               image={project.imgUrl}
               githubUrl={project.githubUrl}
               onEdit={() => console.log("edit", project.id)}
-              onDelete={() => console.log("delete", project.id)}
+              onDelete={() => deleteMutation.mutate(project.id)}
             />
           );
         })}
@@ -72,31 +91,8 @@ const AdminProjects = () => {
         onClose={() => setIsAddOpen(false)}
         onSubmit={mutate}
       />
-
-      {/* {projects.map((project) => {
-        return (
-          <AdminCard
-            key={project.id}
-            title={project.title}
-            description={project.shortDescription}
-            tags={project.tags}
-            githubUrl={project.githubUrl}
-            image={project.imgUrl}
-            onEdit={() => console.log("edit", project.id)}
-            onDelete={() => console.log("delete", project.id)}
-          />
-        );
-      })} */}
     </>
   );
 };
-
-// githubUrl,
-// image,
-// tags,
-// title,
-// hasTags,
-// longDescription,
-// shortDescription,
 
 export default AdminProjects;

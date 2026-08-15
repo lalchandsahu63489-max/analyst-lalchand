@@ -7,6 +7,8 @@ import { addCaseStudies } from "../../services/addMethods";
 import LoadingOverlay from "../../components/common/LoadingOverlay";
 import { getCaseStudies } from "../../services/getMethods";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { deleteCaseStudy } from "../../services/deleteMethods";
+import toast from "react-hot-toast";
 
 const AdminCaseStudies = () => {
   const [search, setSearch] = useState("");
@@ -24,13 +26,28 @@ const AdminCaseStudies = () => {
     mutationKey: ["case-study"],
     mutationFn: addCaseStudies,
     onSuccess: () => {
-      console.log("success");
+      toast.success("Added Case Study");
       queryClient.invalidateQueries({
         queryKey: ["case-study"],
       });
     },
     onError: () => {
       console.log("error");
+      toast.error("Error : something went wrong!");
+    },
+  });
+
+  const deleteMutation = useMutation({
+    mutationKey: ["case-study"],
+    mutationFn: deleteCaseStudy,
+    onSuccess: () => {
+      toast.success("Deleted Successfully");
+      queryClient.invalidateQueries({
+        queryKey: ["case-study"],
+      });
+    },
+    onError: (error) => {
+      toast.error("Error : something went wrong!");
     },
   });
 
@@ -40,6 +57,9 @@ const AdminCaseStudies = () => {
   if (isLoading) {
     return <LoadingOverlay label="Loading Case Studies..." />;
   }
+
+  if (deleteMutation.isPending)
+    return <LoadingOverlay label="Deleting Case Study..." />;
 
   return (
     <>
@@ -61,7 +81,7 @@ const AdminCaseStudies = () => {
             image={item.imgUrl}
             githubUrl={item.githubUrl}
             onEdit={() => console.log("edit", item.id)}
-            onDelete={() => console.log("delete", item.id)}
+            onDelete={() => deleteMutation.mutate(item.id)}
           />
         ))}
       </div>
