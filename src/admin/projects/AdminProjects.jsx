@@ -9,18 +9,21 @@ import LoadingOverlay from "../../components/common/LoadingOverlay";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { deleteProject } from "../../services/deleteMethods";
 import toast from "react-hot-toast";
+import AdminEditModal from "../components/AdminEditModal";
+import { updateProject } from "../../services/updateMethods";
 
 const AdminProjects = () => {
   const [search, setSearch] = useState("");
   const [isAddOpen, setIsAddOpen] = useState(false);
+  const [editingItem, setEditingItem] = useState(null);
   const queryClient = useQueryClient();
 
-  const { data, error, isLoading } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ["projects"],
     queryFn: getProjects,
   });
 
-  const { mutate, isPending, error } = useMutation({
+  const { mutate, isPending } = useMutation({
     mutationKey: ["projects"],
     mutationFn: addProject,
     onSuccess: () => {
@@ -49,6 +52,21 @@ const AdminProjects = () => {
     },
   });
 
+  const updateMutation = useMutation({
+    mutationKey: ["projects"],
+    mutationFn: updateProject,
+    onSuccess: () => {
+      toast.success("updated successfully");
+      queryClient.invalidateQueries({
+        queryKey: ["projects"],
+      });
+    },
+    onError: (error) => {
+      console.log(error);
+      toast.error("Error : something went wrong!");
+    },
+  });
+
   if (isPending) {
     return <LoadingOverlay label="Adding Project..." />;
   }
@@ -58,6 +76,9 @@ const AdminProjects = () => {
 
   if (deleteMutation.isPending)
     return <LoadingOverlay label="deleting Project..." />;
+
+  if (updateMutation.isPending)
+    return <LoadingOverlay label="updating Project..." />;
 
   return (
     <>
@@ -79,7 +100,7 @@ const AdminProjects = () => {
               tags={project.tags}
               image={project.imgUrl}
               githubUrl={project.githubUrl}
-              onEdit={() => console.log("edit", project.id)}
+              onEdit={() => setEditingItem(project)}
               onDelete={() => deleteMutation.mutate(project.id)}
             />
           );
@@ -90,6 +111,20 @@ const AdminProjects = () => {
         isOpen={isAddOpen}
         onClose={() => setIsAddOpen(false)}
         onSubmit={mutate}
+      />
+
+      <AdminEditModal
+        isOpen={!!editingItem}
+        initialValues={editingItem}
+        onClose={() => setEditingItem(null)}
+        onSubmit={(values) =>
+          updateMutation.mutate({
+            ...editingItem,
+            ...values,
+            // The form only stores a new file in `values.image` when the user picks one.
+            // If they do not upload a replacement, the existing `imgUrl` should stay untouched.
+          })
+        }
       />
     </>
   );

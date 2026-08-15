@@ -9,10 +9,13 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { getContent } from "../../services/getMethods";
 import { deleteContent } from "../../services/deleteMethods";
 import toast from "react-hot-toast";
+import AdminEditModal from "../components/AdminEditModal";
+import { updateContent } from "../../services/updateMethods";
 
 const AdminContent = () => {
   const [search, setSearch] = useState("");
   const [isAddOpen, setIsAddOpen] = useState(false);
+  const [editingItem, setEditingItem] = useState(null);
 
   const queryClient = useQueryClient();
 
@@ -51,6 +54,20 @@ const AdminContent = () => {
     },
   });
 
+  const updateMutation = useMutation({
+    mutationKey: ["content"],
+    mutationFn: updateContent,
+    onSuccess: () => {
+      toast.success("Updated successfully");
+      queryClient.invalidateQueries({
+        queryKey: ["content"],
+      });
+    },
+    onError: () => {
+      toast.error("Error : something went wrong!");
+    },
+  });
+
   if (isPending) {
     return <LoadingOverlay label="Adding Content..." />;
   }
@@ -61,11 +78,14 @@ const AdminContent = () => {
   if (deleteMutation.isPending)
     return <LoadingOverlay label="Deleting Content..." />;
 
+  if (updateMutation.isPending)
+    return <LoadingOverlay label="Updating Content..." />;
+
   return (
     <>
       <AdminTop
         title="Gallery / Content"
-        subtitle="Manage your portfolio's case studies"
+        subtitle="Manage your portfolio's case studies tung"
         searchValue={search}
         onSearchChange={(e) => setSearch(e.target.value)}
         onAdd={() => setIsAddOpen(true)}
@@ -80,7 +100,7 @@ const AdminContent = () => {
             image={item.imgUrl}
             showTags={false}
             githubUrl={item.githubUrl}
-            onEdit={() => console.log("edit", item.id)}
+            onEdit={() => setEditingItem(item)}
             onDelete={() => deleteMutation.mutate(item.id)}
           />
         ))}
@@ -90,6 +110,18 @@ const AdminContent = () => {
         isOpen={isAddOpen}
         onClose={() => setIsAddOpen(false)}
         onSubmit={mutate}
+      />
+
+      <AdminEditModal
+        isOpen={!!editingItem}
+        initialValues={editingItem}
+        onClose={() => setEditingItem(null)}
+        onSubmit={(values) =>
+          updateMutation.mutate({
+            ...editingItem,
+            ...values,
+          })
+        }
       />
     </>
   );

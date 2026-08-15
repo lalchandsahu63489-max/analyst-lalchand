@@ -1,10 +1,7 @@
 import { useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
-import * as Yup from "yup";
 import { FiX, FiPlus, FiUploadCloud } from "react-icons/fi";
-
-export const inputClasses =
-  "w-full bg-background-elevated border-border rounded-lg border px-3.5 py-3 text-sm text-text focus:outline-2 focus:outline-accent focus:outline-offset-1 focus:border-accent";
+import { inputClasses, validationSchema } from "./AdminAddModal";
 
 const FieldError = ({ name }) => (
   <ErrorMessage name={name}>
@@ -12,35 +9,29 @@ const FieldError = ({ name }) => (
   </ErrorMessage>
 );
 
-export const validationSchema = Yup.object({
-  title: Yup.string().trim().required("Title is required"),
-  shortDescription: Yup.string()
-    .trim()
-    .required("Short description is required"),
-  longDescription: Yup.string().trim().required("Long description is required"),
-  githubUrl: Yup.string().trim().url("Enter a valid URL"),
-  hasTags: Yup.boolean(),
-  tags: Yup.array().when("hasTags", {
-    is: true,
-    then: (schema) => schema.min(1, "Add at least one tag"),
-  }),
-});
-
-const initialValues = {
-  title: "",
-  shortDescription: "",
-  longDescription: "",
-  githubUrl: "",
-  hasTags: true,
-  tags: [],
-  image: null,
-};
-
-const AdminAddModal = ({ isOpen, onClose, onSubmit }) => {
+const AdminEditModal = ({ isOpen, onClose, onSubmit, initialValues }) => {
   const [tagInput, setTagInput] = useState("");
-  const [imagePreview, setImagePreview] = useState(null);
+  // NOTE: the Firestore records use `imgUrl`, not `imageUrl`.
+  // If the modal is opened with an existing record, the preview must come from the saved URL.
+  // Otherwise the preview is null and the form still has no real file selected yet.
+  const [imagePreview, setImagePreview] = useState(
+    initialValues?.imgUrl || initialValues?.imageUrl || null,
+  );
 
-  if (!isOpen) return null;
+  if (!isOpen || !initialValues) return null;
+
+  const formInitialValues = {
+    title: initialValues.title || "",
+    shortDescription: initialValues.shortDescription || "",
+    longDescription: initialValues.longDescription || "",
+    githubUrl: initialValues.githubUrl || "",
+    hasTags: initialValues.hasTags ?? true,
+    tags: initialValues.tags || [],
+    // `image` is the file input value for the upload field.
+    // It is intentionally null here because the item already has an existing `imgUrl`.
+    // If the user does not choose a new file, we should not overwrite the saved image.
+    image: null,
+  };
 
   const handleAddTag = (values, setFieldValue) => {
     const trimmed = tagInput.trim();
@@ -66,7 +57,6 @@ const AdminAddModal = ({ isOpen, onClose, onSubmit }) => {
 
   const handleClose = () => {
     setTagInput("");
-    setImagePreview(null);
     onClose();
   };
 
@@ -82,15 +72,16 @@ const AdminAddModal = ({ isOpen, onClose, onSubmit }) => {
           <FiX size={16} />
         </button>
 
-        <h3 className="font-display text-text mb-6 text-xl">Add New Item</h3>
+        <h3 className="font-display text-text mb-6 text-xl">Edit Item</h3>
 
         <Formik
-          initialValues={initialValues}
+          initialValues={formInitialValues}
           validationSchema={validationSchema}
-          onSubmit={(values, { resetForm }) => {
+          onSubmit={(values) => {
+            // This `image` field is only set when the user picks a new file.
+            // It stays null when editing an item without changing its photo,
+            // so the submit function needs to keep the old `imgUrl` instead of assuming a fresh image exists.
             onSubmit(values);
-            resetForm();
-            setImagePreview(null);
             onClose();
           }}
         >
@@ -232,7 +223,7 @@ const AdminAddModal = ({ isOpen, onClose, onSubmit }) => {
                   Image
                 </label>
                 <label
-                  htmlFor="image"
+                  htmlFor="editImage"
                   className="border-border hover:border-accent text-text-muted hover:text-accent flex cursor-pointer flex-col items-center justify-center gap-2 rounded-lg border border-dashed py-6 transition-colors duration-150"
                 >
                   {imagePreview ? (
@@ -249,7 +240,7 @@ const AdminAddModal = ({ isOpen, onClose, onSubmit }) => {
                   )}
                 </label>
                 <input
-                  id="image"
+                  id="editImage"
                   type="file"
                   accept="image/*"
                   onChange={(e) => handleImageChange(e, setFieldValue)}
@@ -262,7 +253,7 @@ const AdminAddModal = ({ isOpen, onClose, onSubmit }) => {
                   type="submit"
                   className="btn btn-primary flex-1 justify-center"
                 >
-                  Add Item
+                  Save Changes
                 </button>
                 <button
                   type="button"
@@ -280,4 +271,4 @@ const AdminAddModal = ({ isOpen, onClose, onSubmit }) => {
   );
 };
 
-export default AdminAddModal;
+export default AdminEditModal;

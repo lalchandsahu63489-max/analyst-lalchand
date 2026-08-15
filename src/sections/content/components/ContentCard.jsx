@@ -34,7 +34,7 @@ const ContentCard = ({
               rel="noreferrer"
               className="btn btn-outline btn-sm"
             >
-              GitHub
+              View More..
             </a>
           </div>
         )}

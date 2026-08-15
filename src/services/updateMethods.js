@@ -1,5 +1,6 @@
-import { collection, serverTimestamp, updateDoc } from "firebase/firestore";
+import { doc, serverTimestamp, updateDoc } from "firebase/firestore";
 import { db } from "../firebase/firebase";
+import { uploadImage } from "./uploadImage";
 
 export const updateProject = async ({
   githubUrl,
@@ -10,10 +11,13 @@ export const updateProject = async ({
   longDescription,
   shortDescription,
   id,
+  imgUrl: existingImgUrl,
 }) => {
-  const imgUrl = await uploadImage(image);
+  // `image` is a File object only when the user uploads a new file.
+  // In the edit modal it is null when no file is selected, so we must keep the previous image.
+  const imgUrl = image ? await uploadImage(image) : existingImgUrl;
 
-  await updateDoc(collection(db, "projects", id), {
+  await updateDoc(doc(db, "projects", id), {
     githubUrl,
     title,
     tags,
@@ -35,10 +39,13 @@ export const updateCaseStudies = async ({
   longDescription,
   shortDescription,
   id,
+  imgUrl: existingImgUrl,
 }) => {
-  const imgUrl = await uploadImage(image);
+  // A new File only exists when the user selects an image in the edit modal.
+  // Otherwise `image` is undefined, so we keep the previous Cloudinary URL instead of uploading nothing.
+  const imgUrl = image ? await uploadImage(image) : existingImgUrl;
 
-  await updateDoc(collection(db, "case-studies", id), {
+  await updateDoc(doc(db, "case-studies", id), {
     githubUrl,
     title,
     tags,
@@ -60,10 +67,13 @@ export const updateContent = async ({
   longDescription,
   shortDescription,
   id,
+  imgUrl: existingImgUrl,
 }) => {
-  const imgUrl = await uploadImage(image);
+  // `image` is null/undefined unless the user uploads a replacement.
+  // In that case, we must preserve the existing image URL rather than sending an invalid upload request.
+  const imgUrl = image ? await uploadImage(image) : existingImgUrl;
 
-  await updateDoc(collection(db, "content", id), {
+  await updateDoc(doc(db, "content", id), {
     githubUrl,
     title,
     imgUrl,
