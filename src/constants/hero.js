@@ -41,42 +41,42 @@ export const SOFT_SKILLS = [
 export const SOCIAL_LINKS = [
   {
     label: "GitHub",
-    href: "https://github.com/yourusername",
+    href: "https://github.com/lalchandsahu63489-max",
     icon: FaGithub,
   },
   {
     label: "LinkedIn",
-    href: "https://linkedin.com/in/yourprofile",
+    href: "https://www.linkedin.com/in/analystlalchand/",
     icon: FaLinkedin,
   },
   {
     label: "YouTube",
-    href: "https://youtube.com/@yourchannel",
+    href: "https://youtube.com/@analystlalchand?si=Ud9gHjUuhZqHhWF6",
     icon: FaYoutube,
   },
   {
     label: "Instagram",
-    href: "https://instagram.com/yourusername",
+    href: "https://www.instagram.com/analyst.lalchand?igsi=MWwzczg4bjhnZnd5OQ==",
     icon: FaInstagram,
   },
   {
     label: "X",
-    href: "https://x.com/yourusername",
+    href: "https://x.com/analystlalchand",
     icon: FaXTwitter,
   },
   {
     label: "Facebook",
-    href: "https://facebook.com/yourusername",
+    href: "https://www.facebook.com/share/1F9pVJw81u/",
     icon: FaFacebook,
   },
   {
     label: "Threads",
-    href: "https://threads.net/@yourusername",
+    href: "https://www.threads.com/@analyst.lalchand",
     icon: FaThreads,
   },
   {
     label: "Email",
-    href: "mailto:lalchand.sahu@example.com",
+    href: "mailto:lalchandsahu63489@gmail.com",
     icon: MdEmail,
   },
 ];
@@ -88,7 +88,7 @@ export const HERO_CONTENT = {
     src: "/lalchand.png",
     alt: "Lalchand Sahu",
   },
-  bio: "I transform raw data into meaningful business insights using SQL, Excel, Power BI, data visualization and analytical thinking.",
+  bio: "I turn Data into actionable insights that help businesses and organizations uncover what works, fix what doesn't, and discover where to grow.",
   actions: [
     {
       icon: HiArrowRight,
