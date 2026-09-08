@@ -187,10 +187,10 @@ const Contact = () => {
                 >
                   Send Message →
                 </button>
-                <p className="text-text-muted -mt-1.5 text-xs">
+                {/* <p className="text-text-muted -mt-1.5 text-xs">
                   Note: connect this form to Formspree / EmailJS to actually
                   receive messages.
-                </p>
+                </p> */}
               </Form>
             </Formik>
           </div>

@@ -38,7 +38,7 @@ const Content = () => {
           ))}
         </div>
 
-        <div className="mb-10 flex flex-wrap justify-center gap-3.5">
+        {/* <div className="mb-10 flex flex-wrap justify-center gap-3.5">
           {platformLinks.map(({ label, href }) => (
             <a
               key={label}
@@ -50,7 +50,7 @@ const Content = () => {
               {label}
             </a>
           ))}
-        </div>
+        </div> */}
       </Container>
     </section>
   );

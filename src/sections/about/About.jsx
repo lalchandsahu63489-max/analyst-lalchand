@@ -1,7 +1,6 @@
 import Container from "../../components/ui/Container";
-import AboutMe from "./components/AboutMe";import Education from "./components/Education";
-import MyJourney from "./components/MyJourney";
-
+import AboutMe from "./components/AboutMe";
+import Education from "./components/Education";
 
 const About = () => {
   return (
@@ -10,10 +9,6 @@ const About = () => {
         {/* About me */}
 
         <AboutMe />
-
-        {/* My Learning Jpourney */}
-
-        <MyJourney />
 
         {/* Education */}
 

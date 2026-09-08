@@ -2,7 +2,6 @@ import SectionHeader from "../../../components/common/SectionHeader";
 import {
   aboutStats,
   miniChartBars,
-  timelineData,
 } from "../../../constants/about";
 
 const AboutMe = () => {
@@ -10,7 +9,7 @@ const AboutMe = () => {
     <>
       <SectionHeader
         eyebrow="// About Me"
-        title="My journey, education & passion for data"
+        title="My education & passion for data"
         subtitle="The story behind the dashboards — how I got here and what drives me."
         className="mb-14"
       />

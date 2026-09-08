@@ -5,7 +5,7 @@ export const contactInfoCards = [
   {
     icon: FiMail,
     title: "Email Me",
-    detail: "lalchand.sahu@example.com",
+    detail: "lalchandsahu63489@gmail.com",
   },
   {
     icon: FaLinkedin,
